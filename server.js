@@ -49,22 +49,20 @@ app.get('/admin', (req, res) => {
 app.get('/admin', (req, res) => {
   res.render('Admin', { layout: 'Admin'})
 })
-app.get('*', (req, res) => {
-  res.send('404')
-})
+
 //consultas
-app.post("/", async(req,res) => {
+app.post("/user", async(req,res) => {
   const { email, nombre, password } = req.body
   const response = await saveUser(email, nombre, password)
 
   res.send(response)
 })
 
-app.get('/admin', async(req, res) => {
+app.get('/users', async(req, res) => {
   const response = await getUsers()
-
   res.send(response)
 })
+
 app.get('/login', async(req, res) => {
   const { email, password } = req.query
   const users = await getUsers()
@@ -87,17 +85,12 @@ app.get("/evidencias/:email", async function(req,res){
   const users = await getusers()
   const user = users.find((u) => u.email == email);
   if(user){
-      seccion = usuario.nombre
-      url = usuario.email
+    seccion = usuario.nombre
+    url = usuario.email
+    res.render("Menu", {
+      layout: "Menu",
+      nombre: seccion,
+      urlevidencias: req.route.path
+    })
   }
-  if(url != correo){
-      res.send("url incorrecto")
-  }
-  else{
-  res.render("Inicio", {
-          layout: "Inicio",
-          nombre: seccion,
-          urlevidencias: req.route.path
-      });
-  }
-});
+})

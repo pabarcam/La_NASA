@@ -21,19 +21,19 @@
 {{#if urlHome}}
 {{> Home}}
 <script>
-let url = "http://localhost:3000/"
+let url = "http://localhost:3000/user"
 let email = document.getElementById("email")
 let nombre = document.getElementById("nombre")
 let password = document.getElementById("password")
 
 function nuevoUsuario() {
-  let data = {
+  const data = {
     email: email.value,
     nombre: nombre.value,
     password: password.value,
   }
   console.log(data)
-  axios.post(url, data).then((data) => {
+  axios.post(url, data).then(() => {
     location.href = "http://localhost:3000/login"
     alert("Registro exitoso")
   })
@@ -68,22 +68,22 @@ async function verificacion() {
   let users = []
 
   window.onload = getData()
-async function getData() {
-  await axios.get("http://localhost:3000/admin").then((data) => {
-    users = data.data
-    console.log(users)
-    tbody.innerHTML = ""
-    users.forEach((c) => {
-      tbody.innerHTML += `
-      <tr>
-        <td>${c.id}</td>
-        <td>${c.nombre}</td>
-        <td>${c.email}</td>
-        <td><input onclick="validar(${c.id})" type="checkbox" checked></td>
-      </tr>`
+  async function getData() {
+    await axios.get("http://localhost:3000/users").then((data) => {
+      users = data.data
+      console.log(users)
+      tbody.innerHTML = ""
+      users.forEach((c) => {
+        tbody.innerHTML += `
+        <tr>
+          <td>${c.id}</td>
+          <td>${c.nombre}</td>
+          <td>${c.email}</td>
+          <td><input onclick="validar(${c.id})" type="checkbox" checked></td>
+        </tr>`
+      })
     })
-  })
-}
+  }
 </script>
   {{/if}}
 </body>
